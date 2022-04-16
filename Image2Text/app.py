@@ -1,12 +1,16 @@
-from PIL import Image
-from pytesseract import pytesseract
+import PIL.Image
+from PIL import Image, ImageTk
+import pytesseract as tess
+tess.pytesseract.tesseract_cmd =  r'C:\Users\ryanj\Documents\HackTJ\tesseract.exe'
+
 from tkinter import *
 import pyautogui
-#install dependencies with python3 -m pip install pyautogui
-
 import datetime
+import pyperclip
+import time
 
 class Application():
+    
     def __init__(self, master):
         self.master = master
         self.rect = None
@@ -15,20 +19,21 @@ class Application():
         self.start_y = None
         self.curX = None
         self.curY = None
-
+        self.text = ""
         # root.configure(background = 'red')
         # root.attributes("-transparentcolor","red")
 
-        root.attributes("-transparent", "blue")
-        root.geometry('400x50+200+200')  # set new geometry
+        root.attributes("-transparentcolor", "blue")
+        root.geometry('300x60+200+200')  # set new geometry
         root.title('Selector')
         self.menu_frame = Frame(master, bg="blue")
         self.menu_frame.pack(fill=BOTH, expand=YES)
 
         self.buttonBar = Frame(self.menu_frame,bg="")
         self.buttonBar.pack(fill=BOTH,expand=YES)
+        
 
-        self.snipButton = Button(self.buttonBar, width=3, command=self.createScreenCanvas, background="green")
+        self.snipButton = Button(self.buttonBar, width = 3, command=self.createScreenCanvas, background='red')
         self.snipButton.pack(expand=YES)
 
         self.master_screen = Toplevel(root)
@@ -36,11 +41,22 @@ class Application():
         self.master_screen.attributes("-transparent", "blue")
         self.picture_frame = Frame(self.master_screen, background = "blue")
         self.picture_frame.pack(fill=BOTH, expand=YES)
+        
 
-    def takeBoundedScreenShot(self, x1, y1, x2, y2):
+        label = Label(root, text = " ")
+        label.pack()   
+
+    def takeBoundedScreenShot(self, x1, y1, x2, y2):     
         im = pyautogui.screenshot(region=(x1, y1, x2, y2))
         x = datetime.datetime.now()
         im.save("snips/img.png")
+        img_path = r"snips/img.png"
+        img = PIL.Image.open(img_path)
+        tess.tesseract_cmd = img_path
+        self.text = tess.image_to_string(img)
+        pyperclip.copy(self.text)
+        print(self.text)
+        
 
     def createScreenCanvas(self):
         self.master_screen.deiconify()
@@ -59,22 +75,17 @@ class Application():
         self.master_screen.attributes("-topmost", True)
 
     def on_button_release(self, event):
-        self.recPosition()
 
         if self.start_x <= self.curX and self.start_y <= self.curY:
-            print("right down")
             self.takeBoundedScreenShot(self.start_x, self.start_y, self.curX - self.start_x, self.curY - self.start_y)
 
         elif self.start_x >= self.curX and self.start_y <= self.curY:
-            print("left down")
             self.takeBoundedScreenShot(self.curX, self.start_y, self.start_x - self.curX, self.curY - self.start_y)
 
         elif self.start_x <= self.curX and self.start_y >= self.curY:
-            print("right up")
             self.takeBoundedScreenShot(self.start_x, self.curY, self.curX - self.start_x, self.start_y - self.curY)
 
         elif self.start_x >= self.curX and self.start_y >= self.curY:
-            print("left up")
             self.takeBoundedScreenShot(self.curX, self.curY, self.start_x - self.curX, self.start_y - self.curY)
 
         self.exitScreenshotMode()
@@ -102,11 +113,12 @@ class Application():
         # expand rectangle as you drag the mouse
         self.screenCanvas.coords(self.rect, self.start_x, self.start_y, self.curX, self.curY)
 
-    def recPosition(self):
-        print(self.start_x)
-        print(self.start_y)
-        print(self.curX)
-        print(self.curY)
+
+        
+
+
+        
+
 
 if __name__ == '__main__':
     root = Tk()
