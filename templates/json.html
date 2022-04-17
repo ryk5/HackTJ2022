@@ -1,0 +1,137 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#test').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/background_process_test',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<head>
+  <style>
+
+    body {
+      background-color: #151e59;
+    }
+
+    .tab {
+      overflow: hidden;
+      /*border: 1px solid #ccc;*/
+      background-color: #f1f1f1;
+    }
+
+    h1 {
+      color: #04AA6D;
+      text-align: center;
+    }
+
+    p {
+      color: white;
+      text-align: center;
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+      background-color: inherit;
+      float: right;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border-top: none;
+    }
+
+    .block {
+      display: block;
+      width: 100%;
+      border: none;
+      background-color: #04AA6D;
+      padding: 14px 28px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<div class='container'>
+  <div class="tab">
+    <button class="tablinks" onclick="openCity(event, 'Tokyo')">About Us</button>
+    <button class="tablinks" onclick="openCity(event, 'Paris')">The App</button>
+    <button class="tablinks" onclick="openCity(event, 'London')">App Info</button>
+    
+  </div>
+
+  <div id="London" class="tabcontent">
+    <h1>Inspiration</h1>
+    <p>Inspiration
+      Have you ever wanted to highlight something in a picture and quickly copy it into a Google Doc? Well, we have since forever. One of our group members, Sol, lived in Hong Kong for two years. Since he moved there, he started learning Chinese; he recalls spend hours searching for Chinese characters using a dictionary. He could've saved time and learned more by using TextSnip and quickly copying and pasting the character he didn't know onto an online dictionary. With respect to our other experiences, members of our group also often discuss difficult homework problems that they spend a lot of time typing out. TextSnip is meant to help everyone save time and increase overall work efficiency.</p>
+    <h1>What is does</h1>
+    <p>TextSnip uses Python-tesseract, an optical character recognition (OCR) tool, in order to convert words in a picture into text format.</p>
+    <h1>What's next for Textsnip</h1>
+    <p>Currently, the only language TextSnip is able to convert is English. We hope to implement other languages in the future such as Chinese, Arabic, Spanish, etc.</p>
+
+  </div>
+
+  <div id="Paris" class="tabcontent">
+    <br>
+    <h1 style="text-align: center;">The button is here!</h1>
+    <br>
+    <form style="text-align: center">
+      <a href=#contact id=test><button class='block'>Click to Launch</button></a>
+    </form>
+  </div>
+  
+  <div id="Tokyo" class="tabcontent">
+    <h1 style="text-align: center">Who are we?</h1>
+    <img src="/static/theimage.jpg" alt="Image of us" style="display: block; margin-left: auto; margin-right: auto;">
+    <br>
+    <p style="text-align: center">We at TextSnip are a group of coders looking for solutions to everyday problems. We search for small problems that you didn’t know you needed a fix for, but when you use our products, you’ll see how much of a difference it makes.
+    </p>
+  </div>
+
+  <script>
+    function openCity(evt, cityName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
+
+</div>
